@@ -1,0 +1,17 @@
+main: net.syntaxjedi.betterkits.BetterKits
+name: BetterKits
+version: 0.1
+author: SyntaxJedi
+description: Customizable kits.
+commands:
+  kit:
+    description: Main kit command
+    usage: /kit help
+    permission: kit.access
+    permission-message: You don't have permission to run this command.
+permissions:
+  kit.access:
+    description: Gives access to all basic functions of the plugin
+  kit.admin:
+    description: Gives in-game editing access for kits and allows forced stat changes
+    default: op
