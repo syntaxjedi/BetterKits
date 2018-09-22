@@ -1,9 +1,13 @@
 package net.syntaxjedi.betterkits;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +15,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -28,11 +33,54 @@ public class GUIHandler implements Listener {
 	public static Inventory inv;
 	public static Boolean timeout = false;
 	
-	public static void showKits(Player p){
-		inv = Bukkit.createInventory(p, 9, "Kits");
-		inv.setItem(2, new ItemStack(BetterKits.createItem(Material.IRON_CHESTPLATE, 1, "Fighter", "Fighters have equal strength and defense")));
-		inv.setItem(4, new ItemStack(BetterKits.createItem(Material.IRON_CHESTPLATE, 1, "Defender", "Defenders have lower strength but higher defense")));
-		inv.setItem(6, new ItemStack(BetterKits.createItem(Material.IRON_CHESTPLATE, 1, "Berserker", "Berserkers have lower defense but higher strength")));
+	public static void editKits(Player p){
+		inv = Bukkit.createInventory(p, 18, "Edit Kits");
+		inv.setItem(1, new ItemStack(BetterKits.createItem(Material.IRON_CHESTPLATE, 1, "Level 2", "Level 2 cost: " + FileHandler.getKitCost(2))));
+		inv.setItem(3, new ItemStack(BetterKits.createItem(Material.IRON_CHESTPLATE, 1, "Level 4", "Level 4 cost: " + FileHandler.getKitCost(4))));
+		inv.setItem(5, new ItemStack(BetterKits.createItem(Material.IRON_CHESTPLATE, 1, "Level 6", "Level 6 cost: " + FileHandler.getKitCost(6))));
+		inv.setItem(7, new ItemStack(BetterKits.createItem(Material.IRON_CHESTPLATE, 1, "Level 8", "Level 8 cost: " + FileHandler.getKitCost(8))));
+		inv.setItem(9, new ItemStack(BetterKits.createItem(Material.IRON_CHESTPLATE, 1, "Level 1", "Level 1 cost: " + FileHandler.getKitCost(1))));
+		inv.setItem(11, new ItemStack(BetterKits.createItem(Material.IRON_CHESTPLATE, 1, "Level 3", "Level 3 cost: " + FileHandler.getKitCost(3))));
+		inv.setItem(13, new ItemStack(BetterKits.createItem(Material.IRON_CHESTPLATE, 1, "Level 5", "Level 5 cost: " + FileHandler.getKitCost(5))));
+		inv.setItem(15, new ItemStack(BetterKits.createItem(Material.IRON_CHESTPLATE, 1, "Level 7", "Level 7 cost: " + FileHandler.getKitCost(7))));
+		inv.setItem(17, new ItemStack(BetterKits.createItem(Material.IRON_CHESTPLATE, 1, "Level 9", "Level 9 cost: " + FileHandler.getKitCost(9))));
+		p.openInventory(inv);
+	}
+	
+	public static void showKits(Player p, int points, int level){
+		inv = Bukkit.createInventory(p, 27, "Kits Overview");
+		ItemStack glass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)7);
+		ItemMeta meta = glass.getItemMeta();
+		meta.setDisplayName(" ");
+		glass.setItemMeta(meta);
+		//glass.getItemMeta().setDisplayName("1");
+		for(int i = 0; i < 27; i++){
+			inv.setItem(i, glass);
+		}
+		int nextLevel = level + 1;
+		ItemStack current = new ItemStack(BetterKits.createItem(Material.IRON_CHESTPLATE, 1, ChatColor.BLUE + "Current Kit", ChatColor.GRAY + "Kit Level: " + PlayerHandler.getKit(p)));
+		ItemStack next = new ItemStack(BetterKits.createItem(Material.IRON_CHESTPLATE, 1, ChatColor.YELLOW + "Next Kit", ChatColor.GRAY + "Kit Level: " + nextLevel));
+		ItemMeta currentMeta = current.getItemMeta();
+		ItemMeta nextMeta = next.getItemMeta();
+		
+		List<String> currentLore = current.getItemMeta().getLore();
+		List<String> nextLore = next.getItemMeta().getLore();
+		
+		currentLore.add(ChatColor.GRAY + "Left Click: View");
+		currentLore.add(ChatColor.GRAY + "Right Click: Take");
+		nextLore.add(ChatColor.GRAY + "Kit Cost: " + ChatColor.GREEN + "$" + FileHandler.getKitCost(nextLevel));
+		nextLore.add(ChatColor.GRAY + "Left Click: View");
+		nextLore.add(ChatColor.GRAY + "Right Click: Buy");
+		
+		currentMeta.setLore(currentLore);
+		nextMeta.setLore(nextLore);
+		
+		current.setItemMeta(currentMeta);
+		next.setItemMeta(nextMeta);
+		
+		inv.setItem(12, current);
+		inv.setItem(14, next);
+		inv.setItem(13, new ItemStack(BetterKits.createItem(Material.EMERALD, 1, ChatColor.GREEN + "Balance:", ChatColor.YELLOW + "$" + points)));
 		p.openInventory(inv);
 	}
 	
@@ -41,50 +89,73 @@ public class GUIHandler implements Listener {
 		Player p = (Player) e.getWhoClicked();
 		if(e.getCurrentItem() == null || e.getCurrentItem().equals(Material.AIR)){
 			return;
-		}else if(e.getInventory().getName().contains("Kits")){
+		}
+		if(e.getInventory().getName().contains("Edit")){
 			e.setCancelled(true);
-			if(e.getClick().equals(ClickType.RIGHT) && p.hasPermission("kit.admin")){
-				if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("fighter")){
-					openInv(p, "Fighter");
-				}else if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Defender")){
-					openInv(p, "Defender");
-				}else if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Berserker")){
-					openInv(p, "Berserker");
+			if(p.hasPermission("kit.admin")){
+				if(e.getCurrentItem().getItemMeta().getDisplayName().contains("Level")){
+					editInv(p, e.getCurrentItem().getItemMeta().getDisplayName());
 				}
-			}else if(e.getClick().equals(ClickType.LEFT)){
-				if(BetterKits.getList(p.getName())){
-					long time = FileHandler.getLong();
-					long timeReadable = 0;
-					String timeType = "";
-					if(time < 1200){
-						timeType = "seconds";
-						timeReadable = time / 20;
-					}else if(time >= 1200 && time < 72000){
-						timeType = "minutes";
-						timeReadable = (time / 20) / 60; 
-					}else if(time >= 72000){
-						timeType = "hours";
-						timeReadable = ((time / 60) / 20) / 60; 
+			}
+		}else if(e.getInventory().getName().contains("Overview")){
+			e.setCancelled(true);
+			if(e.getClick().isLeftClick()){
+				if(e.getCurrentItem().getItemMeta().getDisplayName().contains("Current")){
+					//((BetterKits)plugin).giveKit(p, "fighter");
+					openInv(p, e.getCurrentItem().getItemMeta().getDisplayName(), PlayerHandler.getKit(p));
+				}else if(e.getCurrentItem().getItemMeta().getDisplayName().contains("Next")) {
+					openInv(p, e.getCurrentItem().getItemMeta().getDisplayName(), PlayerHandler.getKit(p));
+				}
+			}else if(e.getClick().isRightClick()){
+				if(e.getCurrentItem().getItemMeta().getDisplayName().contains("Current")){
+					if(PlayerHandler.getKitBool(p) == true){
+						String kit = "kit" + PlayerHandler.getKit(p);
+						((BetterKits)plugin).giveKit(p, kit);
+						PlayerHandler.setKitBool(p);
+						p.closeInventory();
+					}else{
+						p.closeInventory();
+						p.sendMessage(ChatColor.RED + "You can't claim this kit yet!");
 					}
-					p.sendMessage(ChatColor.RED + "You have to wait " + timeReadable + " " + timeType + " to claim another kit.");
-					return;
-				}else if(BetterKits.getList(p.getName()) == false){
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("fighter")){
-						((BetterKits)plugin).giveKit(p, "fighter");
-						BetterKits.setTimeout(p, p.getName());
-					}else if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Defender")){
-						((BetterKits)plugin).giveKit(p, "defender");
-						BetterKits.setTimeout(p, p.getName());
-					}else if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Berserker")){
-						((BetterKits)plugin).giveKit(p, "berserker");
-						BetterKits.setTimeout(p, p.getName());
+				}else if(e.getCurrentItem().getItemMeta().getDisplayName().contains("Next")){
+					int level = PlayerHandler.getKit(p);
+					int cost = FileHandler.getKitCost(level + 1);
+					int points = PlayerHandler.getPoints(p);
+					if(points >= cost) {
+						PlayerHandler.setPoints(p, points - cost);
+						PlayerHandler.setKit(p, level + 1);
+						p.closeInventory();
+						p.sendMessage(ChatColor.GREEN + "You bought Kit" + (level + 1) + "!");
+					}else{
+						p.closeInventory();
+						p.sendMessage(ChatColor.RED + "You need " + (cost - points) + " more points for this kit.");
 					}
 				}
 			}
-		}else if(e.getInventory().getName().equalsIgnoreCase("fighter") || e.getInventory().getName().equalsIgnoreCase("defender") || e.getInventory().getName().equalsIgnoreCase("berserker")){
+			
+			
+		}else if(e.getInventory().getName().contains("Current") || e.getInventory().getName().contains("Next")) {
+			e.setCancelled(true);
+			if(e.getCurrentItem().hasItemMeta() && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("back")) {
+				showKits(p, PlayerHandler.getPoints(p), PlayerHandler.getKit(p));
+			}else if(e.getCurrentItem().hasItemMeta() && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Upgrade")) {
+				int level = PlayerHandler.getKit(p);
+				int cost = FileHandler.getKitCost(level + 1);
+				int points = PlayerHandler.getPoints(p);
+				if(points >= cost) {
+					PlayerHandler.setPoints(p, points - cost);
+					PlayerHandler.setKit(p, level + 1);
+					p.closeInventory();
+					p.sendMessage(ChatColor.GREEN + "You bought Kit" + (level + 1) + "!");
+				}else{
+					p.closeInventory();
+					p.sendMessage(ChatColor.RED + "You need " + (cost - points) + " more points for this kit.");
+				}
+			}
+		}else if(e.getInventory().getName().contains("Level")){
 			if(e.getCurrentItem().hasItemMeta() && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("back")){
 				e.setCancelled(true);
-				showKits(p);
+				editKits(p);
 			}else if(e.getCurrentItem().hasItemMeta() && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("clear")){
 				e.setCancelled(true);
 				return;
@@ -93,7 +164,7 @@ public class GUIHandler implements Listener {
 				saveInv(p, e.getInventory(), e.getInventory().getName().toLowerCase());
 			}else if(e.getCurrentItem().hasItemMeta() && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("cancel")){
 				e.setCancelled(true);
-				showKits(p);
+				editKits(p);
 				return;
 			}
 		}
@@ -108,11 +179,35 @@ public class GUIHandler implements Listener {
 				items[(i-9)] = null;
 			}
 		}
-		FileHandler.setConfig(name.toLowerCase(), items);
+		//FileHandler.setConfig(name.toLowerCase(), items);
+		FileHandler.saveKit(name.substring(6,  7), items);
+		try {
+			FileHandler.loadKits();
+		} catch (IOException | InvalidConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	
-	public static void openInv(Player p, String name){
-		ItemStack[] kit = FileHandler.getKit(name.toLowerCase());
+	public static void openInv(Player p, String name, int level){
+		//ItemStack[] kit = FileHandler.getKit(name.toLowerCase());
+		int nextLevel = level + 1;
+		ItemStack[] kit = FileHandler.getKit("kit" + level);
+		inv = Bukkit.createInventory(p,  9*4, name);
+		inv.setItem(1, new ItemStack(BetterKits.createItem(Material.ARROW, 1, "Back", null)));
+		inv.setItem(7, new ItemStack(BetterKits.createItem(Material.EMERALD, 1, ChatColor.YELLOW + "Upgrade", ChatColor.GRAY + "Cost: " + ChatColor.GREEN + "$" + FileHandler.getKitCost(nextLevel))));
+
+		for(int i = 0; i < inv.getSize(); i++){
+			if(i >= 9){
+				inv.setItem(i, kit[(i-9)]);
+			}
+		}
+		
+		p.openInventory(inv);
+	}
+	public static void editInv(Player p, String name){
+		//ItemStack[] kit = FileHandler.getKit(name.toLowerCase());
+		ItemStack[] kit = FileHandler.getKit("kit" + name.substring(6, 7));
+		
 		inv = Bukkit.createInventory(p, 9*4, name);
 		inv.setItem(1, new ItemStack(BetterKits.createItem(Material.ARROW, 1, "Back", null)));
 		inv.setItem(3, new ItemStack(BetterKits.createItem(Material.TNT, 1, "Clear", null)));
@@ -124,11 +219,10 @@ public class GUIHandler implements Listener {
 				inv.setItem(i, kit[(i-9)]);
 			}
 		}
-		
 		p.openInventory(inv);
 	}
 	
-	public static void setScoreboard(Player p, Boolean init, int currentKills, int editKills, int editDeaths){
+	public static void setScoreboard(Player p, int currentKills, int currentDeaths, int currentStreak, double killRatio){
 		ScoreboardManager manager = Bukkit.getScoreboardManager();
 		Scoreboard s = manager.getNewScoreboard();
 		Objective o = s.registerNewObjective("test", "dummy");
@@ -139,32 +233,36 @@ public class GUIHandler implements Listener {
 		Score kills = o.getScore(ChatColor.GREEN + "Kills:");
 		kills.setScore(10);
 		
-		Score killsCount = o.getScore(ChatColor.RED + "0");
+		String killsString = Integer.toString(currentKills);
+		
+		Score killsCount = o.getScore(ChatColor.GREEN + killsString);
 		killsCount.setScore(9);
 		
 		Score deaths = o.getScore(ChatColor.GREEN + "Deaths:");
 		deaths.setScore(8);
 		
-		Score deathsCount = o.getScore(ChatColor.GREEN + "0");
+		String deathsString = Integer.toString(currentDeaths);
+		
+		Score deathsCount = o.getScore(ChatColor.RED + deathsString);
 		deathsCount.setScore(7);
 		
+		Score streak = o.getScore(ChatColor.GREEN + "Streak:");
+		streak.setScore(6);
+		
+		String streakString = Integer.toString(currentStreak);
+		
+		Score streakCount = o.getScore(ChatColor.AQUA + streakString);
+		streakCount.setScore(5);
+		
 		Score killsDeaths = o.getScore(ChatColor.GREEN + "K/D Ratio:");
-		killsDeaths.setScore(6);
+		killsDeaths.setScore(4);
 		
-		Score killsDeathsRatio = o.getScore(ChatColor.RED + "0.0");
-		killsDeathsRatio.setScore(5);
+		String stringRatio = Double.toString(killRatio);
 		
-		if(init){			
-			p.setScoreboard(s);
-		}else if(init == false){
-			String killsString = Integer.toString(currentKills);
-			
-			killsCount = o.getScore(ChatColor.GREEN + killsString);
-			killsCount.setScore(9);
-			
-			p.setScoreboard(s);
-		}else{
-			log.info("End of method");
-		}
+		Score killsDeathsRatio = o.getScore(ChatColor.RED + stringRatio);
+		killsDeathsRatio.setScore(3);
+		
+		p.setScoreboard(s);
+		
 	}
 }

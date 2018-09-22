@@ -1,5 +1,7 @@
 package net.syntaxjedi.betterkits;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,21 +43,40 @@ public class BetterKits extends JavaPlugin implements Listener{
 	@Override
 	public void onEnable(){
 		log.info("[Better Kits] Loading Files");
+		FileHandler.checkFiles();
 		this.saveDefaultConfig();
+		PlayerHandler.getConfig();
+		try {
+			FileHandler.loadKits();
+		} catch (IOException | InvalidConfigurationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		log.info("[Better Kits] Registering Commands");
 		Commands commands = new Commands();
-		this.getCommand("kit").setExecutor(commands);
+		//this.getCommand("kit").setExecutor(commands);
+		this.getCommand("adminkit").setExecutor(commands);
 		log.info("[Better Kits] Registering Events");
 		this.getServer().getPluginManager().registerEvents(new GUIHandler(), this);
 		this.getServer().getPluginManager().registerEvents(new PlayerHandler(), this);
+		this.getServer().getPluginManager().registerEvents(new Commands(), this);
 		this.getServer().getPluginManager().registerEvents(this, this);
+		log.info("[Better Kits] Checking Dependencies");
+		if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")){
+			log.info("[Better Kits] Placeholder API Found");
+		}else{
+			log.info("[Better Kits] Download Placeholder API For Extra Functionalities");
+		}
+		if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")){
+			new PlaceholderHandler(this).hook();
+		}
+		log.info("[Better Kits] Checking Database");
+		try {
+			SQLHandler.tryConnect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		plugin = this;
-	}
-	
-	@EventHandler
-	public void playerJoin(PlayerJoinEvent e){
-		final Player p = e.getPlayer();
-		GUIHandler.setScoreboard(p, true, 0, 0, 0);
 	}
 	
 	public static ItemStack createItem(Material material, int amount, String name, String type){
@@ -85,36 +107,10 @@ public class BetterKits extends JavaPlugin implements Listener{
 		}
 	}
 	
-	//schedule task
-	public static void setTimeout(final Player p, String name){
-		log.info("Timeout: " + FileHandler.getLong());
-		GUIHandler.timeout = true;
-		Long ticks = FileHandler.getLong();
-		final int tid = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
-			public void run(){
-				p.sendMessage(ChatColor.GREEN + "You can claim another kit!");
-				GUIHandler.timeout = false;
-				endTask(name);
-			}
-		}, ticks, ticks);
-		taskID.put(name, tid);
-	}
-	
-	//end task
-	public static void endTask(String name){
-		if(taskID.containsKey(name)){
-			int tid = taskID.get(name); //get id
-			plugin.getServer().getScheduler().cancelTask(tid); //cancel task
-			taskID.remove(name); //remove player
-		}
-	}
-	
 	public static Boolean getList(String name){
 		if(taskID.containsKey(name)){
-			log.info("true");
 			return true;
 		}
-		log.info("false");
 		return false;
 	}
 }

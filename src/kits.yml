@@ -1,0 +1,326 @@
+
+kit1:
+  cost: 0
+  items:
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_HELMET
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_CHESTPLATE
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_LEGGINGS
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_BOOTS
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_SWORD
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: GOLDEN_APPLE
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+kit2:
+  cost: 0
+  items:
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_HELMET
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_CHESTPLATE
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_LEGGINGS
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_BOOTS
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_SWORD
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: GOLDEN_APPLE
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+kit3:
+  cost: 0
+  items:
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_HELMET
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_CHESTPLATE
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_LEGGINGS
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_BOOTS
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_SWORD
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: GOLDEN_APPLE
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+kit4:
+  cost: 0
+  items:
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_HELMET
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_CHESTPLATE
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_LEGGINGS
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_BOOTS
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_SWORD
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: GOLDEN_APPLE
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+kit5:
+  cost: 0
+  items:
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_HELMET
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_CHESTPLATE
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_LEGGINGS
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_BOOTS
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_SWORD
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: GOLDEN_APPLE
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+kit6:
+  cost: 0
+  items:
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_HELMET
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_CHESTPLATE
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_LEGGINGS
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_BOOTS
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_SWORD
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: GOLDEN_APPLE
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+kit7:
+  cost: 0
+  items:
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_HELMET
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_CHESTPLATE
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_LEGGINGS
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_BOOTS
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_SWORD
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: GOLDEN_APPLE
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+kit8:
+  cost: 0
+  items:
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_HELMET
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_CHESTPLATE
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_LEGGINGS
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_BOOTS
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_SWORD
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: GOLDEN_APPLE
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+kit9:
+  cost: 0
+  items:
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_HELMET
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_CHESTPLATE
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_LEGGINGS
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_BOOTS
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_SWORD
+    - null
+    - null
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: GOLDEN_APPLE
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null

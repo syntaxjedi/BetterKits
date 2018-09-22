@@ -1,0 +1,150 @@
+##########################################
+# Do not leave this section blank!       #
+# Database is needed to hold player info #
+##########################################
+database:
+  host: 
+  port: 
+  databaseName: 
+  username: 
+  password: 
+timeout:
+  interval: minutes
+  timeout: 5
+######################################################
+# linear = base level up rate * level                #
+# exponential = (level up rate ^ level) * base level #
+# example:                                           #
+#  base: 20                                          #
+#  modifier: 1.2                                     #
+#              - formula -                           #
+#        (xp to level rounds up)                     #
+#  level 1: (1.2^1)*20 = 24xp to level               #
+#  level 5: (1.2^5)*20 = 50xp to level               #
+#  level 10: (1.2^10)*20 = 124xp to level            #
+#  level 20: (1.2^20)*20 = 767xp to level            #
+#  level 50: (1.2^50)*20 = 182,009xp to level        #
+######################################################
+experienceMod:
+  type: exponential
+  modifier: 1.2
+  base: 10
+  perKill: 2
+########################################################
+# give points for every level? true = yes / false = no #
+# amount = how much points to give                     #
+# atEach = if perLevel is false, after how many        #
+# levels should we give points? (eg: every 5 levels    #
+########################################################
+points:
+  perLevel: true
+  amount: 1
+  atEach: 5
+#####################################################
+# If you want to make quick edits, just change      #
+# 'type: <item>' to what you want. It's recommended #
+# to use the in-game editor by right clicking       #
+# the kit in the '/kit' list                        #
+#####################################################
+kits:
+  fighter:
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_INGOT
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_SWORD
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_PICKAXE
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_INGOT
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+  defender:
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: DIAMOND
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: DIAMOND_SWORD
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: DIAMOND_PICKAXE
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: DIAMOND
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+  berserker:
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_BLOCK
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: EMERALD_BLOCK
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: DIAMOND_BLOCK
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_BLOCK
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: EMERALD_BLOCK
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: DIAMOND_BLOCK
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_BLOCK
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: EMERALD_BLOCK
+    - null
+    - ==: org.bukkit.inventory.ItemStack
+      type: DIAMOND_BLOCK
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
